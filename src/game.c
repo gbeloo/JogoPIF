@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include "game.h"
-#include "../cli-lib/cli.h"
+
+#include <keyboard.h>
+#include <screen.h>
+#include <timer.h>
 
 Game* init_game() {
     Game *game = malloc(sizeof(Game));
@@ -50,13 +53,13 @@ void update_game(Game *game) {
             game->player.y = SCREEN_HEIGHT - 4;
         }
     }
-    Obstaculo *temp = game->obstaculos;
-    Obstaculo *prev = NULL;
+
+    Obstaculo *temp = game->obstaculos, *prev = NULL;
     while (temp) {
         temp->x--;
         if (temp->x < 0) {
             if (prev) prev->proximo = temp->proximo;
-            else game->obstaculos = temp->proximo;
+            else       game->obstaculos = temp->proximo;
             Obstaculo *aRemover = temp;
             temp = temp->proximo;
             free(aRemover);
@@ -66,16 +69,17 @@ void update_game(Game *game) {
         prev = temp;
         temp = temp->proximo;
     }
-    if (rand() % 20 == 0) {
+
+    if (rand() % 20 == 0)
         add_obstaculo(game, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 2);
-    }
+
     temp = game->obstaculos;
     while (temp) {
-        if (temp->x == game->player.x && temp->y == game->player.y) {
+        if (temp->x == game->player.x && temp->y == game->player.y)
             game->game_over = 1;
-        }
         temp = temp->proximo;
     }
+
     if (kbhit()) {
         int ch = getch();
         if ((ch == ' ' || ch == 'w') && !game->player.playerpulando) {
