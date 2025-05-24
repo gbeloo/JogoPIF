@@ -9,27 +9,20 @@ void screenInit(int drawBorders) {
     if (drawBorders) {
         screenBoxEnable();
         for (int x = SCRSTARTX; x <= SCRENDX; x++) {
-            screenGotoxy(x, SCRSTARTY);
-            putchar(BOX_HLINE);
-            screenGotoxy(x, SCRENDY);
-            putchar(BOX_HLINE);
+            screenGotoxy(x, SCRSTARTY); putchar(BOX_HLINE);
+            screenGotoxy(x, SCRENDY);   putchar(BOX_HLINE);
         }
         for (int y = SCRSTARTY; y <= SCRENDY; y++) {
-            screenGotoxy(SCRSTARTX, y);
-            putchar(BOX_VLINE);
-            screenGotoxy(SCRENDX, y);
-            putchar(BOX_VLINE);
+            screenGotoxy(SCRSTARTX, y); putchar(BOX_VLINE);
+            screenGotoxy(SCRENDX, y);   putchar(BOX_VLINE);
         }
-        screenGotoxy(SCRSTARTX, SCRSTARTY);
-        putchar(BOX_UPLEFT);
-        screenGotoxy(SCRENDX, SCRSTARTY);
-        putchar(BOX_UPRIGHT);
-        screenGotoxy(SCRSTARTX, SCRENDY);
-        putchar(BOX_DWNLEFT);
-        screenGotoxy(SCRENDX, SCRENDY);
-        putchar(BOX_DWNRIGHT);
+        screenGotoxy(SCRSTARTX, SCRSTARTY); putchar(BOX_UPLEFT);
+        screenGotoxy(SCRENDX, SCRSTARTY);   putchar(BOX_UPRIGHT);
+        screenGotoxy(SCRSTARTX, SCRENDY);   putchar(BOX_DWNLEFT);
+        screenGotoxy(SCRENDX, SCRENDY);     putchar(BOX_DWNRIGHT);
         screenBoxDisable();
     }
+
     screenUpdate();
 }
 
@@ -41,7 +34,8 @@ void screenDestroy() {
 }
 
 void screenGotoxy(int x, int y) {
-    printf("%s[%d;%dH", ESC, y, x);
+    // ANSI: linha;coluna, 1-based
+    printf("%s[%d;%dH", ESC, y + 1, x + 1);
 }
 
 void screenSetColor(screenColor fg, screenColor bg) {
